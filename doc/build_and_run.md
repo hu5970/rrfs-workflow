@@ -1,5 +1,6 @@
 # 1. Build
 `git clone -b rrfs-mpas-jedi --recursive git@github.com:NOAA-EMC/rrfs-workflow.git`
+`git clone -b rrfs-mpas-jedi --recursive https://github.com/NOAA-EMC/rrfs-workflow.git`
 
 `cd sorc` and run the following command to build the system:
 ```
