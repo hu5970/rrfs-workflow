@@ -192,6 +192,11 @@ fields:
     mpas identity field: hail
     mpas io name: qh
 
+  - field name: equivalent_reflectivity_factor
+    mpas template field: theta
+    mpas identity field: equivalent_reflectivity_factor
+    mpas io name: refl10cm
+
   - field name: cloud_droplet_number_concentration
     mpas template field: theta
     mpas identity field: cloud_droplet_number_concentration

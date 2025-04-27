@@ -9,6 +9,7 @@ cd "${DATA}" || exit 1
 
 start_time=$(date -d "${CDATE:0:8} ${CDATE:8:2}" +%Y-%m-%d_%H:%M:%S) 
 timestr=$(date -d "${CDATE:0:8} ${CDATE:8:2}" +%Y-%m-%d_%H.%M.%S) 
+time_min=$(date -d "${CDATE:0:8} ${CDATE:8:2}" +%M) 
 #
 # determine whether to begin new cycles
 #
@@ -22,6 +23,8 @@ else
   initial_file=${UMBRELLA_PREP_IC_DATA}/mpasin.nc
 fi
 #
+# link fix files from physics, meshes, graphinfo, stream list, and jedi
+#
 ln -snf "${FIXrrfs}/physics/${PHYSICS_SUITE}"/*  .
 ln -snf "${FIXrrfs}/meshes/${MESH_NAME}.ugwp_oro_data.nc"  ./ugwp_oro_data.nc
 zeta_levels=${EXPDIR}/config/ZETA_LEVELS.txt
@@ -34,7 +37,7 @@ ${cpreq} "${FIXrrfs}"/jedi/obsop_name_map.yaml .
 ${cpreq} "${FIXrrfs}"/jedi/keptvars.yaml .
 ${cpreq} "${FIXrrfs}"/jedi/geovars.yaml .
 #
-# create data directory
+# create data sub_directory
 #
 mkdir -p data; cd data || exit 1
 mkdir -p obs ens static_bec
@@ -48,7 +51,12 @@ ln -snf "${FIXrrfs}/static_bec/${MESH_NAME}_L${nlevel}/vbal_${NTASKS}"  static_b
 #
 # copy observations files
 #
-cp "${COMOUT}"/ioda_bufr/det/* obs/.
+obspath_bufr="${COMOUT}/ioda_bufr/${WGF}"
+cp "${obspath_bufr}"/ioda_adpupa.nc  obs/.
+cp "${obspath_bufr}"/ioda_aircar.nc  obs/.
+obspath_refl="${COMOUT}/ioda_mrms_refl/${WGF}"
+cp "${obspath_refl}"/ioda_mrms_"${CDATE}_${time_min}".nc4 obs/ioda_mrms.nc
+
 #
 #  find ensemble forecasts based on user settings
 #
@@ -125,6 +133,7 @@ esac
 
 # run mpasjedi_variational.x
 export OOPS_TRACE=1
+export OOPS_DEBUG=1
 export OMP_NUM_THREADS=1
 
 source prep_step

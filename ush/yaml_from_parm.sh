@@ -32,4 +32,4 @@ fi
 if [[ -s "${EXPDIR}/config/satinfo" ]]; then
   cp "${EXPDIR}/config/satinfo" .
 fi
-"${USHrrfs}/yaml_finalize" "${template}"
+#"${USHrrfs}/yaml_finalize" "${template}"
