@@ -876,38 +876,38 @@ property_name="local_path"
 # Get the base directory of the FV3 forecast model code.
 #
 UFS_WTHR_MDL_DIR="${SORCrrfs}/ufs-weather-model"
-if [ ! -d "${UFS_WTHR_MDL_DIR}" ]; then
-  print_err_msg_exit "\
-The base directory in which the FV3 source code should be located
-(UFS_WTHR_MDL_DIR) does not exist:
-  UFS_WTHR_MDL_DIR = \"${UFS_WTHR_MDL_DIR}\"
-Please clone the external repository containing the code in this directory,
-build the executable, and then rerun the workflow."
-fi
+#if [ ! -d "${UFS_WTHR_MDL_DIR}" ]; then
+#  print_err_msg_exit "\
+#The base directory in which the FV3 source code should be located
+#(UFS_WTHR_MDL_DIR) does not exist:
+#  UFS_WTHR_MDL_DIR = \"${UFS_WTHR_MDL_DIR}\"
+#Please clone the external repository containing the code in this directory,
+#build the executable, and then rerun the workflow."
+#fi
 #
 # Get the base directory of the UFS_UTILS codes.
 #
-UFS_UTILS_DIR="${SORCrrfs}/UFS_UTILS"
-if [ ! -d "${UFS_UTILS_DIR}" ]; then
-  print_err_msg_exit "\
-The base directory in which the UFS utilities source codes should be lo-
-cated (UFS_UTILS_DIR) does not exist:
-  UFS_UTILS_DIR = \"${UFS_UTILS_DIR}\"
-Please clone the external repository containing the code in this direct-
-ory, build the executables, and then rerun the workflow."
-fi
+#UFS_UTILS_DIR="${SORCrrfs}/UFS_UTILS"
+#if [ ! -d "${UFS_UTILS_DIR}" ]; then
+#  print_err_msg_exit "\
+#The base directory in which the UFS utilities source codes should be lo-
+#cated (UFS_UTILS_DIR) does not exist:
+#  UFS_UTILS_DIR = \"${UFS_UTILS_DIR}\"
+#Please clone the external repository containing the code in this direct-
+#ory, build the executables, and then rerun the workflow."
+#fi
 #
 # Get the base directory of the UPP code.
 #
-UPP_DIR="${SORCrrfs}/UPP"
-if [ ! -d "${UPP_DIR}" ]; then
-  print_err_msg_exit "\
-The base directory in which the UPP source code should be located
-(UPP_DIR) does not exist:
-  UPP_DIR = \"${UPP_DIR}\"
-Please clone the external repository containing the code in this directory,
-build the executable, and then rerun the workflow."
-fi
+#UPP_DIR="${SORCrrfs}/UPP"
+#if [ ! -d "${UPP_DIR}" ]; then
+#  print_err_msg_exit "\
+#The base directory in which the UPP source code should be located
+#(UPP_DIR) does not exist:
+#  UPP_DIR = \"${UPP_DIR}\"
+#Please clone the external repository containing the code in this directory,
+#build the executable, and then rerun the workflow."
+#fi
 #
 #
 #-----------------------------------------------------------------------
@@ -916,8 +916,8 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-check_var_valid_value \
-  "USE_CUSTOM_POST_CONFIG_FILE" "valid_vals_USE_CUSTOM_POST_CONFIG_FILE"
+#check_var_valid_value \
+#  "USE_CUSTOM_POST_CONFIG_FILE" "valid_vals_USE_CUSTOM_POST_CONFIG_FILE"
 #
 # Set USE_CUSTOM_POST_CONFIG_FILE to either "TRUE" or "FALSE" so we don't
 # have to consider other valid values later on.
@@ -950,14 +950,14 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-if [ ${USE_CUSTOM_POST_CONFIG_FILE} = "TRUE" ]; then
-  if [ ! -f "${CUSTOM_POST_CONFIG_FP}" ]; then
-    print_err_msg_exit "
-The custom post configuration specified by CUSTOM_POST_CONFIG_FP does not 
-exist:
-  CUSTOM_POST_CONFIG_FP = \"${CUSTOM_POST_CONFIG_FP}\""
-  fi
-fi
+#if [ ${USE_CUSTOM_POST_CONFIG_FILE} = "TRUE" ]; then
+#  if [ ! -f "${CUSTOM_POST_CONFIG_FP}" ]; then
+#    print_err_msg_exit "
+#The custom post configuration specified by CUSTOM_POST_CONFIG_FP does not 
+#exist:
+#  CUSTOM_POST_CONFIG_FP = \"${CUSTOM_POST_CONFIG_FP}\""
+#  fi
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1119,31 +1119,18 @@ if [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ] || \
   if [ "${GWD_HRRRsuite_BASEDIR}" != "${FIXLAM_NCO_BASEDIR}" ]; then
     gwd_hrrrsuite_basedir_orig="${GWD_HRRRsuite_BASEDIR}"
     GWD_HRRRsuite_BASEDIR="${FIXLAM_NCO_BASEDIR}"
-
-    if [ ! -z "${gwd_hrrrsuite_basedir_orig}" ]; then
-      print_err_msg_exit "The workflow assumes that the base 
-directory (GWD_HRRRsuite_BASEDIR) under which the grid-specific 
-subdirectories containing the gravity wave drag-related orography 
-statistics files for the FV3_HRRR/FV3_RAP suites are located is the same 
-as the base directory (FIXLAM_NCO_BASEDIR) under which the other fixed 
-files are located.  Currently, this is not the case:
-  GWD_HRRRsuite_BASEDIR = \"${gwd_hrrrsuite_basedir_orig}\"
-  FIXLAM_NCO_BASEDIR = \"${FIXLAM_NCO_BASEDIR}\"
-Resetting GWD_HRRRsuite_BASEDIR to FIXLAM_NCO_BASEDIR.  Reset value is:
-  GWD_HRRRsuite_BASEDIR = \"${GWD_HRRRsuite_BASEDIR}\""
-    fi
   fi
 #
 # Check that GWD_HRRRsuite_BASEDIR exists and is a directory.
 #
-  if [ ! -d "${GWD_HRRRsuite_BASEDIR}" ]; then
-    print_err_msg_exit "\
-The base directory (GWD_HRRRsuite_BASEDIR) under which the grid-specific
-subdirectories containing the gravity wave drag-related orography files 
-for the FV3_HRRR/FV3_RAP suites should be located does not exist (or is 
-not a directory):
-  GWD_HRRRsuite_BASEDIR = \"${GWD_HRRRsuite_BASEDIR}\""
-  fi
+#  if [ ! -d "${GWD_HRRRsuite_BASEDIR}" ]; then
+#    print_err_msg_exit "\
+#The base directory (GWD_HRRRsuite_BASEDIR) under which the grid-specific
+#subdirectories containing the gravity wave drag-related orography files 
+#for the FV3_HRRR/FV3_RAP suites should be located does not exist (or is 
+#not a directory):
+#  GWD_HRRRsuite_BASEDIR = \"${GWD_HRRRsuite_BASEDIR}\""
+#  fi
   GWD_HRRRsuite_DIR="${GWD_HRRRsuite_BASEDIR}/${PREDEF_GRID_NAME}"
 #
 # Ensure that PREDEF_GRID_NAME is not set to a null string.  Currently,
@@ -1151,31 +1138,31 @@ not a directory):
 # orography statistics files required by this suite are available only
 # for (some of) the predefined grids.
 #
-  if [ -z "${PREDEF_GRID_NAME}" ]; then
-    print_err_msg_exit "\
-A predefined grid name (PREDEF_GRID_NAME) must be specified when using 
-the FV3_HRRR/FV3_RAP physics suites:
-  CCPP_PHYS_SUITE = \"${CCPP_PHYS_SUITE}\"
-  PREDEF_GRID_NAME = \"${PREDEF_GRID_NAME}\""
-  else        
+#  if [ -z "${PREDEF_GRID_NAME}" ]; then
+#    print_err_msg_exit "\
+#A predefined grid name (PREDEF_GRID_NAME) must be specified when using 
+#the FV3_HRRR/FV3_RAP physics suites:
+#  CCPP_PHYS_SUITE = \"${CCPP_PHYS_SUITE}\"
+#  PREDEF_GRID_NAME = \"${PREDEF_GRID_NAME}\""
+#  else        
 #
 # Ensure that the directory GWD_HRRRsuite_DIR in which the orography
 # statistics files required by the FV3_HRRR/FV3_RAP suites are located 
 # actually exists.
 #
-    if [ ! -d "${GWD_HRRRsuite_DIR}" ]; then
-      print_err_msg_exit "\
-The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
-drag-related orography files for the FV3_HRRR/FV3_RAP suites does not exist:
-  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
-    elif [ ! "$( ls -A ${GWD_HRRRsuite_DIR} )" ]; then
-      print_err_msg_exit "\
-The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
-drag related orography files for the FV3_HRRR/FV3_RAP suites is empty:
-  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
-    fi      
-  fi
-
+#    if [ ! -d "${GWD_HRRRsuite_DIR}" ]; then
+#      print_err_msg_exit "\
+#The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
+#drag-related orography files for the FV3_HRRR/FV3_RAP suites does not exist:
+#  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
+#    elif [ ! "$( ls -A ${GWD_HRRRsuite_DIR} )" ]; then
+#      print_err_msg_exit "\
+#The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
+#drag related orography files for the FV3_HRRR/FV3_RAP suites is empty:
+#  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
+#    fi      
+#  fi
+#
 fi
 #
 #-----------------------------------------------------------------------
@@ -1375,12 +1362,12 @@ UFS_CONFIG_TMPL_FP="${PARMrrfs}/${UFS_CONFIG_TMPL_FN}"
 CCPP_PHYS_SUITE_FN="suite_${CCPP_PHYS_SUITE}.xml"
 CCPP_PHYS_SUITE_IN_CCPP_FP="${UFS_WTHR_MDL_DIR}/FV3/ccpp/suites/${CCPP_PHYS_SUITE_FN}"
 CCPP_PHYS_SUITE_FP="${EXPTDIR}/${CCPP_PHYS_SUITE_FN}"
-if [ ! -f "${CCPP_PHYS_SUITE_IN_CCPP_FP}" ]; then
-  print_err_msg_exit "\
-The CCPP suite definition file (CCPP_PHYS_SUITE_IN_CCPP_FP) does not exist
-in the local clone of the ufs-weather-model:
-  CCPP_PHYS_SUITE_IN_CCPP_FP = \"${CCPP_PHYS_SUITE_IN_CCPP_FP}\""
-fi
+#if [ ! -f "${CCPP_PHYS_SUITE_IN_CCPP_FP}" ]; then
+#  print_err_msg_exit "\
+#The CCPP suite definition file (CCPP_PHYS_SUITE_IN_CCPP_FP) does not exist
+#in the local clone of the ufs-weather-model:
+#  CCPP_PHYS_SUITE_IN_CCPP_FP = \"${CCPP_PHYS_SUITE_IN_CCPP_FP}\""
+#fi
 
 #
 #-----------------------------------------------------------------------
@@ -1398,12 +1385,12 @@ fi
 UFS_YAML_FN="fd_ufs.yaml"
 UFS_YAML_IN_PARM_FP="${UFS_WTHR_MDL_DIR}/tests/parm/${UFS_YAML_FN}"
 UFS_YAML_FP="${EXPTDIR}/${UFS_YAML_FN}"
-if [ ! -f "${UFS_YAML_IN_PARM_FP}" ]; then
-  print_err_msg_exit "\
-The (UFS_YAML_IN_PARM_FP) does not exist
-in the local clone of the ufs-weather-model:
-  UFS_YAML_IN_PARM_FP= \"${UFS_YAML_IN_PARM_FP}\""
-fi
+#if [ ! -f "${UFS_YAML_IN_PARM_FP}" ]; then
+#  print_err_msg_exit "\
+#The (UFS_YAML_IN_PARM_FP) does not exist
+#in the local clone of the ufs-weather-model:
+#  UFS_YAML_IN_PARM_FP= \"${UFS_YAML_IN_PARM_FP}\""
+#fi
 
 #
 #-----------------------------------------------------------------------
@@ -1838,7 +1825,7 @@ mkdir -p "$EXPTDIR"
 #
 #-----------------------------------------------------------------------
 #
-mkdir -p "$FIXLAM"
+#mkdir -p "$FIXLAM"
 RES_IN_FIXLAM_FILENAMES=""
 #
 #-----------------------------------------------------------------------
@@ -1849,19 +1836,19 @@ RES_IN_FIXLAM_FILENAMES=""
 #
 #-----------------------------------------------------------------------
 #
-res_in_grid_fns=""
-if [ "${RUN_TASK_MAKE_GRID}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="grid" \
-    output_varname_res_in_filenames="res_in_grid_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to grid files failed."
-
-  RES_IN_FIXLAM_FILENAMES="${res_in_grid_fns}"
-
-fi
+#res_in_grid_fns=""
+#if [ "${RUN_TASK_MAKE_GRID}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="grid" \
+#    output_varname_res_in_filenames="res_in_grid_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to grid files failed."
+#
+#  RES_IN_FIXLAM_FILENAMES="${res_in_grid_fns}"
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1871,29 +1858,29 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-res_in_orog_fns=""
-if [ "${RUN_TASK_MAKE_OROG}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="orog" \
-    output_varname_res_in_filenames="res_in_orog_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to orography files failed."
-
-  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
-     [ "${res_in_orog_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
-    print_err_msg_exit "\
-The resolution extracted from the orography file names (res_in_orog_fns)
-does not match the resolution in other groups of files already consi-
-dered (RES_IN_FIXLAM_FILENAMES):
-  res_in_orog_fns = ${res_in_orog_fns}
-  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
-  else
-    RES_IN_FIXLAM_FILENAMES="${res_in_orog_fns}"
-  fi
-
-fi
+#res_in_orog_fns=""
+#if [ "${RUN_TASK_MAKE_OROG}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="orog" \
+#    output_varname_res_in_filenames="res_in_orog_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to orography files failed."
+#
+#  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
+#     [ "${res_in_orog_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
+#    print_err_msg_exit "\
+#The resolution extracted from the orography file names (res_in_orog_fns)
+#does not match the resolution in other groups of files already consi-
+#dered (RES_IN_FIXLAM_FILENAMES):
+#  res_in_orog_fns = ${res_in_orog_fns}
+#  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
+#  else
+#    RES_IN_FIXLAM_FILENAMES="${res_in_orog_fns}"
+#  fi
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1904,29 +1891,29 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-res_in_sfc_climo_fns=""
-if [ "${RUN_TASK_MAKE_SFC_CLIMO}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="sfc_climo" \
-    output_varname_res_in_filenames="res_in_sfc_climo_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to surface climatology files failed."
-
-  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
-     [ "${res_in_sfc_climo_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
-    print_err_msg_exit "\
-The resolution extracted from the surface climatology file names (res_-
-in_sfc_climo_fns) does not match the resolution in other groups of files
-already considered (RES_IN_FIXLAM_FILENAMES):
-  res_in_sfc_climo_fns = ${res_in_sfc_climo_fns}
-  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
-  else
-    RES_IN_FIXLAM_FILENAMES="${res_in_sfc_climo_fns}"
-  fi
-
-fi
+#res_in_sfc_climo_fns=""
+#if [ "${RUN_TASK_MAKE_SFC_CLIMO}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="sfc_climo" \
+#    output_varname_res_in_filenames="res_in_sfc_climo_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to surface climatology files failed."
+#
+#  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
+#     [ "${res_in_sfc_climo_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
+#    print_err_msg_exit "\
+#The resolution extracted from the surface climatology file names (res_-
+#in_sfc_climo_fns) does not match the resolution in other groups of files
+#already considered (RES_IN_FIXLAM_FILENAMES):
+#  res_in_sfc_climo_fns = ${res_in_sfc_climo_fns}
+#  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
+#  else
+#    RES_IN_FIXLAM_FILENAMES="${res_in_sfc_climo_fns}"
+#  fi
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -2114,6 +2101,9 @@ set_thompson_mp_fix_files \
 #-----------------------------------------------------------------------
 #
 GLOBAL_VAR_DEFNS_FP="$EXPTDIR/$GLOBAL_VAR_DEFNS_FN"
+
+return
+
 cp $USHrrfs/${EXPT_DEFAULT_CONFIG_FN} ${GLOBAL_VAR_DEFNS_FP}
 #
 #-----------------------------------------------------------------------
