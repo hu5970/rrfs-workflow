@@ -1838,7 +1838,7 @@ mkdir -p "$EXPTDIR"
 #
 #-----------------------------------------------------------------------
 #
-mkdir -p "$FIXLAM"
+#mkdir -p "$FIXLAM"
 RES_IN_FIXLAM_FILENAMES=""
 #
 #-----------------------------------------------------------------------
@@ -1849,19 +1849,19 @@ RES_IN_FIXLAM_FILENAMES=""
 #
 #-----------------------------------------------------------------------
 #
-res_in_grid_fns=""
-if [ "${RUN_TASK_MAKE_GRID}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="grid" \
-    output_varname_res_in_filenames="res_in_grid_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to grid files failed."
-
-  RES_IN_FIXLAM_FILENAMES="${res_in_grid_fns}"
-
-fi
+#res_in_grid_fns=""
+#if [ "${RUN_TASK_MAKE_GRID}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="grid" \
+#    output_varname_res_in_filenames="res_in_grid_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to grid files failed."
+#
+#  RES_IN_FIXLAM_FILENAMES="${res_in_grid_fns}"
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1871,29 +1871,29 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-res_in_orog_fns=""
-if [ "${RUN_TASK_MAKE_OROG}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="orog" \
-    output_varname_res_in_filenames="res_in_orog_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to orography files failed."
-
-  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
-     [ "${res_in_orog_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
-    print_err_msg_exit "\
-The resolution extracted from the orography file names (res_in_orog_fns)
-does not match the resolution in other groups of files already consi-
-dered (RES_IN_FIXLAM_FILENAMES):
-  res_in_orog_fns = ${res_in_orog_fns}
-  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
-  else
-    RES_IN_FIXLAM_FILENAMES="${res_in_orog_fns}"
-  fi
-
-fi
+#res_in_orog_fns=""
+#if [ "${RUN_TASK_MAKE_OROG}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="orog" \
+#    output_varname_res_in_filenames="res_in_orog_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to orography files failed."
+#
+#  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
+#     [ "${res_in_orog_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
+#    print_err_msg_exit "\
+#The resolution extracted from the orography file names (res_in_orog_fns)
+#does not match the resolution in other groups of files already consi-
+#dered (RES_IN_FIXLAM_FILENAMES):
+#  res_in_orog_fns = ${res_in_orog_fns}
+#  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
+#  else
+#    RES_IN_FIXLAM_FILENAMES="${res_in_orog_fns}"
+#  fi
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1904,29 +1904,29 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-res_in_sfc_climo_fns=""
-if [ "${RUN_TASK_MAKE_SFC_CLIMO}" = "FALSE" ]; then
-
-  link_fix \
-    verbose="$VERBOSE" \
-    file_group="sfc_climo" \
-    output_varname_res_in_filenames="res_in_sfc_climo_fns" || \
-  print_err_msg_exit "\
-Call to function to create links to surface climatology files failed."
-
-  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
-     [ "${res_in_sfc_climo_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
-    print_err_msg_exit "\
-The resolution extracted from the surface climatology file names (res_-
-in_sfc_climo_fns) does not match the resolution in other groups of files
-already considered (RES_IN_FIXLAM_FILENAMES):
-  res_in_sfc_climo_fns = ${res_in_sfc_climo_fns}
-  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
-  else
-    RES_IN_FIXLAM_FILENAMES="${res_in_sfc_climo_fns}"
-  fi
-
-fi
+#res_in_sfc_climo_fns=""
+#if [ "${RUN_TASK_MAKE_SFC_CLIMO}" = "FALSE" ]; then
+#
+#  link_fix \
+#    verbose="$VERBOSE" \
+#    file_group="sfc_climo" \
+#    output_varname_res_in_filenames="res_in_sfc_climo_fns" || \
+#  print_err_msg_exit "\
+#Call to function to create links to surface climatology files failed."
+#
+#  if [ ! -z "${RES_IN_FIXLAM_FILENAMES}" ] && \
+#     [ "${res_in_sfc_climo_fns}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
+#    print_err_msg_exit "\
+#The resolution extracted from the surface climatology file names (res_-
+#in_sfc_climo_fns) does not match the resolution in other groups of files
+#already considered (RES_IN_FIXLAM_FILENAMES):
+#  res_in_sfc_climo_fns = ${res_in_sfc_climo_fns}
+#  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
+#  else
+#    RES_IN_FIXLAM_FILENAMES="${res_in_sfc_climo_fns}"
+#  fi
+#
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -2114,6 +2114,9 @@ set_thompson_mp_fix_files \
 #-----------------------------------------------------------------------
 #
 GLOBAL_VAR_DEFNS_FP="$EXPTDIR/$GLOBAL_VAR_DEFNS_FN"
+
+return
+
 cp $USHrrfs/${EXPT_DEFAULT_CONFIG_FN} ${GLOBAL_VAR_DEFNS_FP}
 #
 #-----------------------------------------------------------------------

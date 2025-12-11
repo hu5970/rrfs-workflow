@@ -113,10 +113,10 @@ fi
 # if not, run Init.sh (otherwise, the workflow generation will fail)
 #-----------------------------------------------------------------------
 #
-if [[ ! -L ${USHrrfs}/../fix/.agent || ! -e ${USHrrfs}/../fix/.agent ]] \
-  && [ -e ${USHrrfs}/Init.sh ]; then
-    ${USHrrfs}/Init.sh
-fi
+#if [[ ! -L ${USHrrfs}/../fix/.agent || ! -e ${USHrrfs}/../fix/.agent ]] \
+#  && [ -e ${USHrrfs}/Init.sh ]; then
+#    ${USHrrfs}/Init.sh
+#fi
 #
 #-----------------------------------------------------------------------
 #
@@ -129,7 +129,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-. $USHrrfs/setup.sh
+. $USHrrfs/setup_nco.sh
 #
 #-----------------------------------------------------------------------
 #
@@ -575,640 +575,6 @@ chmod +x ${EXPTDIR}/run_rocoto.sh
 #
 #-----------------------------------------------------------------------
 #
-# If USE_CRON_TO_RELAUNCH is set to TRUE, add a line to the user's cron
-# table to call the (re)launch script every CRON_RELAUNCH_INTVL_MNTS mi-
-# nutes.
-#
-#-----------------------------------------------------------------------
-#
-if [ "${USE_CRON_TO_RELAUNCH}" = "TRUE" ]; then
-#
-# Make a backup copy of the user's crontab file and save it in a file.
-#
-  time_stamp=$( date "+%F_%T" )
-  crontab_backup_fp="$EXPTDIR/crontab.bak.${time_stamp}"
-  print_info_msg "
-Copying contents of user cron table to backup file:
-  crontab_backup_fp = \"${crontab_backup_fp}\""
-  crontab -l > ${crontab_backup_fp}
-#
-# Below, we use "grep" to determine whether the crontab line that the
-# variable CRONTAB_LINE contains is already present in the cron table.
-# For that purpose, we need to escape the asterisks in the string in
-# CRONTAB_LINE with backslashes.  Do this next.
-#
-  crontab_line_esc_astr=$( printf "%s" "${CRONTAB_LINE}" | \
-                           sed -r -e "s%[*]%\\\\*%g" )
-#
-# In the grep command below, the "^" at the beginning of the string be-
-# ing passed to grep is a start-of-line anchor while the "$" at the end
-# of the string is an end-of-line anchor.  Thus, in order for grep to
-# find a match on any given line of the output of "crontab -l", that
-# line must contain exactly the string in the variable crontab_line_-
-# esc_astr without any leading or trailing characters.  This is to eli-
-# minate situations in which a line in the output of "crontab -l" con-
-# tains the string in crontab_line_esc_astr but is precedeeded, for ex-
-# ample, by the comment character "#" (in which case cron ignores that
-# line) and/or is followed by further commands that are not part of the
-# string in crontab_line_esc_astr (in which case it does something more
-# than the command portion of the string in crontab_line_esc_astr does).
-#
-  grep_output=$( crontab -l | grep "^${crontab_line_esc_astr}$" )
-  exit_status=$?
-
-  if [ "${exit_status}" -eq 0 ]; then
-
-    print_info_msg "
-The following line already exists in the cron table and thus will not be
-added:
-  CRONTAB_LINE = \"${CRONTAB_LINE}\""
-
-  else
-
-    print_info_msg "
-Adding the following line to the cron table in order to automatically
-resubmit FV3-LAM workflow:
-  CRONTAB_LINE = \"${CRONTAB_LINE}\""
-
-    ( crontab -l; echo "${CRONTAB_LINE}" ) | crontab -
-
-  fi
-
-fi
-#
-#-----------------------------------------------------------------------
-#
-# Create the FIX directories under the experiment directory.
-#
-#-----------------------------------------------------------------------
-#
-if [ "${DO_DACYCLE}" = "TRUE" ]; then
-  # Resolve the target directory that the FIXgsi symlink points to
-  ln -fsn "$FIXrrfs/gsi" "$FIXgsi"
-  path_resolved=$( readlink -m "$FIXgsi" )
-  if [ ! -d "${path_resolved}" ]; then
-    print_err_msg_exit "Missing link to FIXgsi
-    FIXgsi = \"$FIXgsi\"
-    path_resolved = \"${path_resolved}\"
-    Please ensure that path_resolved is an existing directory and then rerun
-    the experiment generation script."
-  fi
-fi  # check if DA
-
-# Resolve the target directory that the FIXcrtm symlink points to
-ln -fsn "$CRTM_FIX" "$FIXcrtm"
-path_resolved=$( readlink -m "$FIXcrtm" )
-if [ ! -d "${path_resolved}" ]; then
-  print_err_msg_exit "Missing link to FIXcrtm
-  FIXcrtm = \"$FIXcrtm\"
-  path_resolved = \"${path_resolved}\"
-  Please ensure that path_resolved is an existing directory and then rerun
-  the experiment generation script."
-fi
-
-# Resolve the target directory that the FIXuppcrtm symlink points to
-ln -fsn "$CRTM_FIX" "$FIXuppcrtm"
-path_resolved=$( readlink -m "$FIXuppcrtm" )
-if [ ! -d "${path_resolved}" ]; then
-  print_err_msg_exit "\
-  Missing link to FIXuppcrtm
-  FIXuppcrtm = \"$FIXuppcrtm\"
-  path_resolved = \"${path_resolved}\"
-  Please ensure that path_resolved is an existing directory and then rerun
-  the experiment generation script."
-fi
-
-# Resolve the target directory that the FIXsmokedust symlink points to
-ln -fsn "$FIXrrfs/smoke_dust" "$FIXsmokedust"
-path_resolved=$( readlink -m "$FIXsmokedust" )
-if [ ! -d "${path_resolved}" ]; then
-  print_err_msg_exit "Missing link to FIXsmokedust
-  FIXsmokedust = \"$FIXsmokedust\"
-  path_resolved = \"${path_resolved}\"
-  Please ensure that path_resolved is an existing directory and then rerun
-  the experiment generation script."
-fi
-
-if [ "${DO_BUFRSND}" = "TRUE" ]; then
-  # Resolve the target directory that the FIXbufrsnd symlink points to
-  ln -fsn "$FIXrrfs/bufrsnd" "$FIXbufrsnd"
-  path_resolved=$( readlink -m "$FIXbufrsnd" )
-  if [ ! -d "${path_resolved}" ]; then
-    print_err_msg_exit "Missing link to FIXbufrsnd
-    FIXsmokedust = \"$FIXbufrsnd\"
-    path_resolved = \"${path_resolved}\"
-    Please ensure that path_resolved is an existing directory and then rerun
-    the experiment generation script."
-  fi
-fi
-
-# Resolve target directory that FIXam symlink points to
-check_for_preexist_dir_file "$FIXam" "delete"
-ln -fsn "$FIXgsm" "$FIXam"
-path_resolved=$( readlink -m "$FIXam" )
-if [ ! -d "${path_resolved}" ]; then
-  print_err_msg_exit "\
-  The path specified by FIXam after resolving all symlinks (path_resolved) 
-  must be an existing directory:
-  FIXam = \"$FIXam\"
-  path_resolved = \"${path_resolved}\"
-  Please ensure that path_resolved is an existing directory and then rerun
-  the experiment generation script."
-fi
-
-#
-#-----------------------------------------------------------------------
-#
-# Copy templates of various input files to the experiment directory.
-#
-#-----------------------------------------------------------------------
-#
-print_info_msg "$VERBOSE" "
-Copying templates of various input files to the experiment directory..."
-
-print_info_msg "$VERBOSE" "
-  Copying the template data table file to the experiment directory..."
-cp "${DATA_TABLE_TMPL_FP}" "${DATA_TABLE_FP}"
-
-print_info_msg "$VERBOSE" "
-  Copying the template field table file to the experiment directory..."
-cp "${FIELD_TABLE_TMPL_FP}" "${FIELD_TABLE_FP}"
-
-#
-# Copy the CCPP physics suite definition file from its location in the
-# clone of the FV3 code repository to the experiment directory (EXPT-
-# DIR).
-#
-print_info_msg "$VERBOSE" "
-Copying the CCPP physics suite definition XML file from its location in
-the forecast model directory sturcture to the experiment directory..."
-cp "${CCPP_PHYS_SUITE_IN_CCPP_FP}" "${CCPP_PHYS_SUITE_FP}"
-
-#
-# copy nems.yaml from its location in the
-# clone of the FV3 code repository to the experiment directory
-#
-print_info_msg "$VERBOSE" "
-Copying the nems.yaml from its location in
-the forecast model directory sturcture to the experiment directory..."
-cp "${UFS_YAML_IN_PARM_FP}" "${UFS_YAML_FP}"
-#
-#-----------------------------------------------------------------------
-#
-# Set parameters in the FV3-LAM namelist file.
-#
-#-----------------------------------------------------------------------
-#
-print_info_msg "$VERBOSE" "
-Setting parameters in FV3 namelist file (FV3_NML_FP):
-  FV3_NML_FP = \"${FV3_NML_FP}\""
-#
-# Set npx and npy, which are just NX plus 1 and NY plus 1, respectively.
-# These need to be set in the FV3-LAM Fortran namelist file.  They represent
-# the number of cell vertices in the x and y directions on the regional
-# grid.
-#
-npx=$((NX+1))
-npy=$((NY+1))
-#
-# For the physics suites that use RUC LSM, set the parameter kice to 9,
-# Otherwise, leave it unspecified (which means it gets set to the default
-# value in the forecast model).
-#
-# NOTE:
-# May want to remove kice from FV3.input.yml (and maybe input.nml.FV3).
-#
-kice=""
-if [ "${SDF_USES_RUC_LSM}" = "TRUE" ]; then
-  kice="9"
-fi
-#
-# Set lsoil, which is the number of input soil levels provided in the 
-# chgres_cube output NetCDF file.  This is the same as the parameter 
-# nsoill_out in the namelist file for chgres_cube.  [On the other hand, 
-# the parameter lsoil_lsm (not set here but set in input.nml.FV3 and/or 
-# FV3.input.yml) is the number of soil levels that the LSM scheme in the
-# forecast model will run with.]  Here, we use the same approach to set
-# lsoil as the one used to set nsoill_out in exrrfs_make_ics.sh.  
-# See that script for details.
-#
-# NOTE:
-# May want to remove lsoil from FV3.input.yml (and maybe input.nml.FV3).
-# Also, may want to set lsm here as well depending on SDF_USES_RUC_LSM.
-#
-lsoil="4"
-if [ "${EXTRN_MDL_NAME_ICS}" = "HRRR" -o \
-     "${EXTRN_MDL_NAME_ICS}" = "RAP" -o \
-     "${EXTRN_MDL_NAME_ICS}" = "HRRRDAS" -o \
-     "${EXTRN_MDL_NAME_ICS}" = "RRFS" ] && \
-   [ "${SDF_USES_RUC_LSM}" = "TRUE" ]; then
-  lsoil="9"
-fi
-# 
-# fhzero = 0.25
-#     get time-max fields like UH to reset at 15-minute intervals
-#
-# avg_max_length=900, sec, 
-#     for needing restart files also output at higher frequency
-#     or other time-max fields output at high frequency
-#
-avg_max_length="3600.0"
-fhzero="1.0"
-if [ "${NSOUT_MIN}" = "15" ]; then
-  avg_max_length="3600.0"
-  fhzero="1.0"
-fi
-#
-# Create a multiline variable that consists of a yaml-compliant string
-# specifying the values that the namelist variables that are physics-
-# suite-independent need to be set to.  Below, this variable will be
-# passed to a python script that will in turn set the values of these
-# variables in the namelist file.
-#
-# IMPORTANT:
-# If we want a namelist variable to be removed from the namelist file,
-# in the "settings" variable below, we need to set its value to the
-# string "null".  This is equivalent to setting its value to 
-#    !!python/none
-# in the base namelist file specified by FV3_NML_BASE_SUITE_FP or the 
-# suite-specific yaml settings file specified by FV3_NML_YAML_CONFIG_FP.
-#
-# It turns out that setting the variable to an empty string also works
-# to remove it from the namelist!  Which is better to use??
-#
-settings="\
-'atmos_model_nml': {
-    'avg_max_length': ${avg_max_length},
-    'blocksize': $BLOCKSIZE,
-    'ccpp_suite': ${CCPP_PHYS_SUITE},
-  }
-'fv_core_nml': {
-    'target_lon': ${LON_CTR},
-    'target_lat': ${LAT_CTR},
-    'nrows_blend': ${HALO_BLEND},
-    'regional_bcs_from_gsi': FALSE,
-    'write_restart_with_bcs': FALSE,
-    'stretch_fac': ${STRETCH_FAC},
-    'npx': $npx,
-    'npy': $npy,
-    'io_layout': [${IO_LAYOUT_X}, ${IO_LAYOUT_Y}],
-    'layout': [${LAYOUT_X}, ${LAYOUT_Y}],
-    'bc_update_interval': ${LBC_SPEC_INTVL_HRS},
-  }
-'gfs_physics_nml': {
-    'fhzero':${fhzero},
-    'kice': ${kice:-null},
-    'lsoil': ${lsoil:-null},
-    'print_diff_pgr': ${PRINT_DIFF_PGR},
-    'rrfs_sd': ${DO_SMOKE_DUST},
-    'ebb_dcycle': ${EBB_DCYCLE},
-  }"
-if [ "${USE_CLM}" = "TRUE" ]; then
-    settings="$settings
-'gfs_physics_nml': {
-    'lkm': 1,
-    'iopt_lake': 2,
-    'clm_lake_debug': FALSE,
-    'clm_debug_print': FALSE,
-    'frac_ice': TRUE,
-    'kice': 9,
-    'min_seaice': 0.15,
-    'min_lakeice': 0.15,
-    'fhzero':${fhzero},
-    'lsoil': ${lsoil:-null},
-    'print_diff_pgr': ${PRINT_DIFF_PGR},
-    'rrfs_sd': ${DO_SMOKE_DUST},
-    'ebb_dcycle': ${EBB_DCYCLE},
-  }"
-fi
-#
-# Add to "settings" the values of those namelist variables that specify
-# the paths to fixed files in the FIXam directory.  As above, these namelist
-# variables are physcs-suite-independent.
-#
-# Note that the array FV3_NML_VARNAME_TO_FIXam_FILES_MAPPING contains
-# the mapping between the namelist variables and the names of the files
-# in the FIXam directory.  Here, we loop through this array and process
-# each element to construct each line of "settings".
-#
-settings="$settings
-'namsfc': {"
-
-dummy_run_dir="$EXPTDIR/any_cyc"
-if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
-  dummy_run_dir="${dummy_run_dir}/any_ensmem"
-fi
-
-regex_search="^[ ]*([^| ]+)[ ]*[|][ ]*([^| ]+)[ ]*$"
-num_nml_vars=${#FV3_NML_VARNAME_TO_FIXam_FILES_MAPPING[@]}
-for (( i=0; i<${num_nml_vars}; i++ )); do
-
-  mapping="${FV3_NML_VARNAME_TO_FIXam_FILES_MAPPING[$i]}"
-  nml_var_name=$( printf "%s\n" "$mapping" | \
-                  sed -n -r -e "s/${regex_search}/\1/p" )
-  FIXam_fn=$( printf "%s\n" "$mapping" |
-              sed -n -r -e "s/${regex_search}/\2/p" )
-
-  fp="\"\""
-  if [ ! -z "${FIXam_fn}" ]; then
-    fp="$FIXam/${FIXam_fn}"
-  fi
-#
-# Add a line to the variable "settings" that specifies (in a yaml-compliant
-# format) the name of the current namelist variable and the value it should
-# be set to.
-#
-  settings="$settings
-    '${nml_var_name}': $fp,"
-
-done
-#
-# Add the closing curly bracket to "settings".
-#
-settings="$settings
-  }"
-#
-#
-#-----------------------------------------------------------------------
-#
-# Call the set_namelist.py script to create a new FV3 namelist file (full
-# path specified by FV3_NML_FP) using the file FV3_NML_BASE_SUITE_FP as
-# the base (i.e. starting) namelist file, with physics-suite-dependent
-# modifications to the base file specified in the yaml configuration file
-# FV3_NML_YAML_CONFIG_FP (for the physics suite specified by CCPP_PHYS_SUITE),
-# and with additional physics-suite-independent modificaitons specified
-# in the variable "settings" set above.
-#
-#-----------------------------------------------------------------------
-#
-# For generating the namelist for the fire weather grid, do not use a yaml file.
-#
-if [ "${PREDEF_GRID_NAME}" = "RRFS_FIREWX_1.5km" ]; then
-$USHrrfs/set_namelist.py -q \
-                        -n ${FV3_NML_BASE_SUITE_FP} \
-                        -u "$settings" \
-                        -o ${FV3_NML_FP} || \
-  print_err_msg_exit "\
-Call to python script set_namelist.py to generate an FV3 namelist file
-failed.  Parameters passed to this script are:
-  Full path to base namelist file:
-    FV3_NML_BASE_SUITE_FP = \"${FV3_NML_BASE_SUITE_FP}\"
-  Full path to output namelist file: 
-    FV3_NML_FP = \"${FV3_NML_FP}\"
-  Namelist settings specified on command line:
-    settings =
-$settings"
-
-else
-$USHrrfs/set_namelist.py -q \
-                        -n ${FV3_NML_BASE_SUITE_FP} \
-                        -c ${FV3_NML_YAML_CONFIG_FP} ${CCPP_PHYS_SUITE} \
-                        -u "$settings" \
-                        -o ${FV3_NML_FP} || \
-  print_err_msg_exit "\
-Call to python script set_namelist.py to generate an FV3 namelist file
-failed.  Parameters passed to this script are:
-  Full path to base namelist file:
-    FV3_NML_BASE_SUITE_FP = \"${FV3_NML_BASE_SUITE_FP}\"
-  Full path to yaml configuration file for various physics suites:
-    FV3_NML_YAML_CONFIG_FP = \"${FV3_NML_YAML_CONFIG_FP}\"
-  Physics suite to extract from yaml configuration file:
-    CCPP_PHYS_SUITE = \"${CCPP_PHYS_SUITE}\"
-  Full path to output namelist file:
-    FV3_NML_FP = \"${FV3_NML_FP}\"
-  Namelist settings specified on command line:
-    settings =
-$settings"
-#
-# If not running the MAKE_GRID_TN task (which implies the workflow will
-# use pregenerated grid files), set the namelist variables specifying
-# the paths to surface climatology files.  These files are located in
-# (or have symlinks that point to them) in the FIXLAM directory.
-#
-# Note that if running the MAKE_GRID_TN task, this action usually cannot
-# be performed here but must be performed in that task because the names
-# of the surface climatology files depend on the CRES parameter (which is
-# the C-resolution of the grid), and this parameter is in most workflow
-# configurations is not known until the grid is created.
-#
-if [ "${RUN_TASK_MAKE_GRID}" = "FALSE" ]; then
-
-  set_FV3nml_sfc_climo_filenames || print_err_msg_exit "\
-Call to function to set surface climatology file names in the FV3 namelist
-file failed."
-
-fi
-
-if [[ "${DO_DACYCLE}" = "TRUE" || "${DO_ENKFUPDATE}" = "TRUE" ]]; then
-  if [ "${SDF_USES_RUC_LSM}" = "TRUE" ]; then
-    lsoil="9"
-  fi
-  lupdatebc="false"
-  if [ "${DO_UPDATE_BC}" = "TRUE" ]; then
-    lupdatebc="false" # not ready for setting this to true yet
-  fi
-
-# need to generate a namelist for da cycle
- settings="\
- 'fv_core_nml': {
-     'external_ic': false,
-     'make_nh'    : false,
-     'na_init'    : 0,
-     'nggps_ic'   : false,
-     'mountain'  : true,
-     'regional_bcs_from_gsi': ${lupdatebc},
-     'warm_start' : true,
-   }
- 'gfs_physics_nml': {
-     'lsoil': ${lsoil:-null},
-   }"
-# commnet out for using current develop branch that has no radar tten code yet.
-# 'gfs_physics_nml': {
-#    'fh_dfi_radar': [${FH_DFI_RADAR[@]}],
-#  }"
- 
- $USHrrfs/set_namelist.py -q \
-                         -n ${FV3_NML_FP} \
-                         -u "$settings" \
-                         -o ${FV3_NML_RESTART_FP} || \
-   print_err_msg_exit "\
- Call to python script set_namelist.py to generate an restart FV3 namelist file
- failed.  Parameters passed to this script are:
-   Full path to base namelist file:
-     FV3_NML_FP = \"${FV3_NML_FP}\"
-   Full path to output namelist file for DA:
-     FV3_NML_RESTART_FP = \"${FV3_NML_RESTART_FP}\"
-   Namelist settings specified on command line:
-     settings =
- $settings"
-fi
-#
-# Add the relevant tendency-based stochastic physics namelist variables to
-# "settings" when running with SPPT, SHUM, or SKEB turned on. If running 
-# with SPP or LSM SPP, set the "new_lscale" variable.  Otherwise only 
-# include an empty "nam_stochy" stanza. 
-#
-settings="\
-'gfs_physics_nml': {
-    'do_shum': ${DO_SHUM},
-    'do_sppt': ${DO_SPPT},
-    'do_skeb': ${DO_SKEB},
-    'do_spp': ${DO_SPP},
-    'n_var_spp': ${N_VAR_SPP},
-    'n_var_lndp': ${N_VAR_LNDP},
-    'lndp_type': ${LNDP_TYPE},
-    'lndp_each_step': ${LSM_SPP_EACH_STEP},
-    'fhcyc': ${FHCYC_LSM_SPP_OR_NOT},
-  }"
-settings="$settings
-'nam_stochy': {"
-if [ "${DO_SPPT}" = "TRUE" ]; then 
-    settings="$settings
-    'iseed_sppt': ${ISEED_SPPT},
-    'sppt': ${SPPT_MAG},
-    'sppt_logit': ${SPPT_LOGIT},
-    'sppt_lscale': ${SPPT_LSCALE},
-    'sppt_sfclimit': ${SPPT_SFCLIMIT},
-    'sppt_tau': ${SPPT_TSCALE},
-    'spptint': ${SPPT_INT},
-    'use_zmtnblck': ${USE_ZMTNBLCK},"
-fi
-
-if [ "${DO_SHUM}" = "TRUE" ]; then 
-    settings="$settings
-    'iseed_shum': ${ISEED_SHUM},
-    'shum': ${SHUM_MAG},
-    'shum_lscale': ${SHUM_LSCALE},
-    'shum_tau': ${SHUM_TSCALE},
-    'shumint': ${SHUM_INT},"
-fi
-
-if [ "${DO_SKEB}" = "TRUE" ]; then
-    settings="$settings
-    'iseed_skeb': ${ISEED_SKEB},
-    'skeb': ${SKEB_MAG},
-    'skeb_lscale': ${SKEB_LSCALE},
-    'skebnorm': ${SKEBNORM},
-    'skeb_tau': ${SKEB_TSCALE},
-    'skebint': ${SKEB_INT},
-    'skeb_vdof': ${SKEB_VDOF},"
-fi
-
-if [ "${DO_SPP}" = "TRUE" ] || [ "${DO_LSM_SPP}" = "TRUE" ] || [ "${DO_SPPT}" = "TRUE" ] || [ "${DO_SHUM}" = "TRUE" ] || [ "${DO_SKEB}" = "TRUE" ]; then
-    settings="$settings
-    'new_lscale': ${NEW_LSCALE},"
-fi
-settings="$settings
-  }"
-#
-# Add the relevant SPP namelist variables to "settings" when running with
-# SPP turned on.  Otherwise only include an empty "nam_sppperts" stanza.
-#
-settings="$settings
-'nam_sppperts': {"
-if [ "${DO_SPP}" = "TRUE" ]; then
-    settings="$settings
-    'iseed_spp': [ $( printf "%s, " "${ISEED_SPP[@]}" ) ],
-    'spp_lscale': [ $( printf "%s, " "${SPP_LSCALE[@]}" ) ],
-    'sppint': ${SPPINT},
-    'spp_prt_list': [ $( printf "%s, " "${SPP_MAG_LIST[@]}" ) ],
-    'spp_sigtop1': [ $( printf "%s, " "${SPP_SIGTOP1[@]}" ) ],
-    'spp_sigtop2': [ $( printf "%s, " "${SPP_SIGTOP2[@]}" ) ],
-    'spp_stddev_cutoff': [ $( printf "%s, " "${SPP_STDDEV_CUTOFF[@]}" ) ],
-    'spp_tau': [ $( printf "%s, " "${SPP_TSCALE[@]}" ) ],
-    'spp_var_list': [ $( printf "%s, " "${SPP_VAR_LIST[@]}" ) ],"
-fi
-settings="$settings
-  }"
-#
-# Add the relevant LSM SPP namelist variables to "settings" when running with
-# LSM SPP turned on.
-#
-settings="$settings
-'nam_sfcperts': {"
-if [ "${DO_LSM_SPP}" = "TRUE" ]; then
-    settings="$settings
-    'lndp_type': ${LNDP_TYPE},
-    'lndpint':  ${LNDPINT},
-    'lndp_model_type': ${LNDP_TYPE},
-    'lndp_tau': [ $( printf "%s, " "${LSM_SPP_TSCALE[@]}" ) ],
-    'lndp_lscale': [ $( printf "%s, " "${LSM_SPP_LSCALE[@]}" ) ],
-    'iseed_lndp': [ $( printf "%s, " "${ISEED_LSM_SPP[@]}" ) ],
-    'lndp_var_list': [ $( printf "%s, " "${LSM_SPP_VAR_LIST[@]}" ) ],
-    'lndp_prt_list': [ $( printf "%s, " "${LSM_SPP_MAG_LIST[@]}" ) ],"
-fi
-settings="$settings
-  }"
-print_info_msg $VERBOSE "
-The variable \"settings\" specifying values of the namelist variables
-has been set as follows:
-
-settings =
-$settings"
-#
-#-----------------------------------------------------------------------
-#
-# Generate namelist files with stochastic physics if needed
-#
-if [ "${DO_ENSEMBLE}" = TRUE ] && ([ "${DO_SPP}" = TRUE ] || [ "${DO_SPPT}" = TRUE ] || [ "${DO_SHUM}" = TRUE ] \
-  || [ "${DO_SKEB}" = TRUE ] || [ "${DO_LSM_SPP}" =  TRUE ]); then
-
-  $USHrrfs/set_namelist.py -q \
-                          -n  ${FV3_NML_FP}  \
-                          -u "$settings" \
-                          -o ${FV3_NML_STOCH_FP} || \
-  print_err_msg_exit "\
-  Call to python script set_namelist.py to generate an FV3 namelist file with stochastics
-  failed.  Parameters passed to this script are:
-   Full path to base namelist file:
-     FV3_NML_FP = \"${FV3_NML_FP}\"
-   Full path to output namelist file for stochastics:
-     FV3_NML_STOCH_FP = \"${FV3_NML_STOCH_FP}\"
-   Namelist settings specified on command line:
-     settings =
- $settings"
-#
-#-----------------------------------------------------------------------
-#
-if [[ "${DO_DACYCLE}" = "TRUE" || "${DO_ENKFUPDATE}" = "TRUE" ]]; then
-  $USHrrfs/set_namelist.py -q \
-                          -n  ${FV3_NML_RESTART_FP}  \
-                          -u "$settings" \
-                          -o ${FV3_NML_RESTART_STOCH_FP} || \
-  print_err_msg_exit "\
- Call to python script set_namelist.py to generate an restart FV3 namelist file with stochastics
- failed.  Parameters passed to this script are:
-   Full path to base namelist file:
-     FV3_NML_RESTART_FP = \"${FV3_NML_RESTART_FP}\"
-   Full path to output namelist file for DA with stochastics:
-     FV3_NML_RESTART_STOCH_FP = \"${FV3_NML_RESTART_STOCH_FP}\"
-   Namelist settings specified on command line:
-     settings =
- $settings"
-
- if [ "${DO_ENSFCST_MULPHY}" = "TRUE" ]; then
-   for i in {1..5}
-   do
-     $USHrrfs/set_namelist.py -q \
-                             -n  ${FV3_NML_RESTART_STOCH_FP}  \
-                             -c ${FV3_NML_YAML_CONFIG_FP}_ensphy rrfsens_phy${i}  \
-                             -o ${FV3_NML_RESTART_STOCH_FP}_ensphy${i}
-   done
- fi
-
-fi
-
-fi
-fi
-#
-#-----------------------------------------------------------------------
-#
-# To have a record of how this experiment/workflow was generated, copy
-# the experiment/workflow configuration file to the experiment directo-
-# ry.
-#
-#-----------------------------------------------------------------------
-#
 cp $USHrrfs/${EXPT_CONFIG_FN} $EXPTDIR
 #
 #-----------------------------------------------------------------------
@@ -1291,13 +657,13 @@ Done.
 #
 # If necessary, run the NOMADS script to source external model data.
 #
-if [ "${NOMADS}" = "TRUE" ]; then
-  echo "Getting NOMADS online data"
-  echo "NOMADS_file_type=" $NOMADS_file_type
-  cd $EXPTDIR
-  $USHrrfs/NOMADS_get_extrn_mdl_files.sh $DATE_FIRST_CYCL $CYCL_HRS $NOMADS_file_type $FCST_LEN_HRS $LBC_SPEC_INTVL_HRS
-fi
-echo "here 1 "
+#if [ "${NOMADS}" = "TRUE" ]; then
+#  echo "Getting NOMADS online data"
+#  echo "NOMADS_file_type=" $NOMADS_file_type
+#  cd $EXPTDIR
+#  $USHrrfs/NOMADS_get_extrn_mdl_files.sh $DATE_FIRST_CYCL $CYCL_HRS $NOMADS_file_type $FCST_LEN_HRS $LBC_SPEC_INTVL_HRS
+#fi
+#echo "here 1 "
 #
 #-----------------------------------------------------------------------
 #
@@ -1307,11 +673,9 @@ echo "here 1 "
 #-----------------------------------------------------------------------
 #
 { restore_shell_opts; } > /dev/null 2>&1
-echo "here 1.1 "
+echo "finished ..."
 
 }
-
-echo "here 2 "
 #
 #-----------------------------------------------------------------------
 #
@@ -1322,7 +686,6 @@ echo "here 2 "
 #
 set -u
 [[ ! -f config.sh ]] && echo "config.sh not found!" && exit 1
-echo "here 3 "
 #
 #-----------------------------------------------------------------------
 #
@@ -1351,7 +714,6 @@ USHrrfs="${scrfunc_dir}"
 tmp_fn="tmp"
 tmp_fp="$USHrrfs/${tmp_fn}"
 rm -f "${tmp_fp}"
-echo "here 31 "
 #
 # Set the name of and full path to the log file in which the output from
 # the experiment/workflow generation function will be saved.
@@ -1359,7 +721,6 @@ echo "here 31 "
 log_fn="log.generate_FV3LAM_wflow"
 log_fp="$USHrrfs/${log_fn}"
 rm -f "${log_fp}"
-echo "here 32 "
 #
 # Call the generate_FV3LAM_wflow function defined above to generate the
 # experiment/workflow.  Note that we pipe the output of the function
@@ -1379,7 +740,6 @@ retval=$?
 echo "$EXPTDIR" >> "${tmp_fp}"
 echo "$retval" >> "${tmp_fp}"
 } | tee "${log_fp}"
-echo "here 4 "
 #
 # Read in experiment/workflow variables needed later below from the tem-
 # porary file created in the subshell above containing the call to the
