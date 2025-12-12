@@ -770,12 +770,12 @@ if [[ $DO_ENS_BLENDING == "TRUE" && $EXTRN_MDL_NAME_ICS = "GDASENKF" ]]; then
   # Run convert coldstart files to fv3 restart (rotate winds and remap).
   export OMP_NUM_THREADS=2
   fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
-  cpreq ${fixgriddir}/cold2warm_all.nc .
-  export pgm1=fv3lam_pre_blending.exe
-. prep_step
-  ${APRUN_PRE_BLENDING} ${EXECrrfs}/$pgm1 >>$pgmout_pre_blending 2>errfile_pre_blending
-  export err=$?; err_chk
-  mv ${DATA}/cold2warm_all.nc ${shared_output_data}/.
+#  cpreq ${fixgriddir}/cold2warm_all.nc .
+#  export pgm1=fv3lam_pre_blending.exe
+#. prep_step
+#  ${APRUN_PRE_BLENDING} ${EXECrrfs}/$pgm1 >>$pgmout_pre_blending 2>errfile_pre_blending
+#  export err=$?; err_chk
+#  mv ${DATA}/cold2warm_all.nc ${shared_output_data}/.
 
   echo "Pre-Blending end `date`"
 

@@ -904,7 +904,7 @@ cd INPUT
 acsnow_ct=$(ncdump -h sfc_data.nc|grep acsnow|wc -l)
 if [ $acsnow_ct -eq 0 ] && [ ! ${WGF} = "firewx" ]; then
   echo "Run DATA sfc_data.nc surge for acsnow"
-  ncks -A ${FIXrrfs}/acsnow/acsnow.nc sfc_data.nc
+#???  ncks -A ${FIXrrfs}/acsnow/acsnow.nc sfc_data.nc
   export err=$?; err_chk
 fi
 cd ..

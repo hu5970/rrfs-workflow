@@ -384,6 +384,7 @@ settings="\
   'gesroot': ${GESROOT:-}
   'ensctrl_gesroot': ${ENSCTRL_GESROOT:-}
   'comroot': ${COMROOT:-}
+  'dcomroot': ${DCOMROOT:-}
   'ensctrl_comout': ${ENSCTRL_COMOUT:-}
   'rrfse_gesroot': ${RRFSE_GESROOT:-}
   'obstype_source': ${OBSTYPE_SOURCE}
@@ -563,6 +564,7 @@ ${EXPTDIR}/run_rocoto.sh"
 
 echo "#!/bin/bash" > ${EXPTDIR}/run_rocoto.sh
 if [[ "${MACHINE,,}" == "wcoss2" ]] ; then
+  export rocoto_ver=1.3.5
   echo "module use /apps/ops/test/nco/modulefiles" >> ${EXPTDIR}/run_rocoto.sh
   echo "module load core/rocoto/${rocoto_ver}" >> ${EXPTDIR}/run_rocoto.sh
 else
@@ -1305,6 +1307,7 @@ fi
 #-----------------------------------------------------------------------
 #
 { restore_shell_opts; } > /dev/null 2>&1
+echo "finished ..."
 
 }
 
