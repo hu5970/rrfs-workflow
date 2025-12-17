@@ -158,6 +158,7 @@ elif [ "${PREDEF_GRID_NAME}" = "RRFS_NA_3km" ]; then
 elif [ "${PREDEF_GRID_NAME}" = "RRFS_CONUS_3km" ]; then
   gridname="conus"
   gridspacing="3km"
+  exit 0
 fi
 #
 net4=$(echo ${NET:0:4} | tr '[:upper:]' '[:lower:]')

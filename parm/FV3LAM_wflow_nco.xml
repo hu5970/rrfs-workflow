@@ -1226,7 +1226,7 @@ MODULES_RUN_TASK_FP script.
           <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
           <or>
             <datadep age="00:30"><cyclestr>&DATAROOT;/&NET;_forecast_spinup_@H_&VERSION;/&WGF;/m#mem#/RESTART/</cyclestr><cyclestr offset="{{ dt_atmos }}">@Y@m@d.@H@M@S.coupler.res</cyclestr></datadep>
-            <datadep age="00:00:00:05"><cyclestr>&COMROOT;/&RUN;.@Y@m@d/@H/m#mem#/run_blending</cyclestr> </datadep>
+            <datadep age="00:00:00:05"><cyclestr>&COMROOT;/&NET;/&VERSION;/&RUN;.@Y@m@d/@H_spinup/m#mem#/run_blending</cyclestr> </datadep>
           </or>
         </and>
       </dependency>

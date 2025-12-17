@@ -755,7 +755,7 @@ if [[ $DO_ENS_BLENDING == "TRUE" && $EXTRN_MDL_NAME_ICS = "GDASENKF" ]]; then
 
   # Required FIX files
   cpreq  $FIXLAM/${CRES}_grid.tile7.nc .
-  cpreq  $FIXLAM/${CRES}_oro_data.tile7.halo0.nc .
+  cpreq  $FIXLAM/${CRES}_oro_data.tile7.halo0.nc oro_data.tile7.halo0.nc
   cpreq  $FIX_GSI/$PREDEF_GRID_NAME/fv3_akbk fv_core.res.nc
 
   # Shortcut the file names
@@ -764,18 +764,18 @@ if [[ $DO_ENS_BLENDING == "TRUE" && $EXTRN_MDL_NAME_ICS = "GDASENKF" ]]; then
   grid=./${CRES}_grid.tile7.nc
   akbk=./fv_core.res.nc
   akbkcold=./gfs_ctrl.nc
-  orog=./${CRES}_oro_data.tile7.halo0.nc
+  orog=./oro_data.tile7.halo0.nc
   bndy=./gfs.bndy.nc
 
   # Run convert coldstart files to fv3 restart (rotate winds and remap).
   export OMP_NUM_THREADS=2
   fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
-#  cpreq ${fixgriddir}/cold2warm_all.nc .
-#  export pgm1=fv3lam_pre_blending.exe
-#. prep_step
-#  ${APRUN_PRE_BLENDING} ${EXECrrfs}/$pgm1 >>$pgmout_pre_blending 2>errfile_pre_blending
-#  export err=$?; err_chk
-#  mv ${DATA}/cold2warm_all.nc ${shared_output_data}/.
+  cpreq ${fixgriddir}/cold2warm_all.nc .
+  export pgm1=fv3lam_pre_blending.exe
+. prep_step
+  ${APRUN_PRE_BLENDING} ${EXECrrfs}/$pgm1 >>$pgmout_pre_blending 2>errfile_pre_blending
+  export err=$?; err_chk
+  mv ${DATA}/cold2warm_all.nc ${shared_output_data}/.
 
   echo "Pre-Blending end `date`"
 

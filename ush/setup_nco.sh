@@ -2024,7 +2024,8 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-NNODES_FORECAST=$(( (PE_MEMBER01 + PPN_FORECAST - 1)/PPN_FORECAST ))
+NNODES_FORECAST=${NNODES_FORECAST}
+#NNODES_FORECAST=$(( (PE_MEMBER01 + PPN_FORECAST - 1)/PPN_FORECAST ))
 
 #
 #-----------------------------------------------------------------------
