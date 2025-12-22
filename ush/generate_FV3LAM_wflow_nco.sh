@@ -216,6 +216,7 @@ settings="\
   'run': ${RUN}
   'envir': ${envir}
   'wgf': ${WGF}
+  'grid_name': ${PREDEF_GRID_NAME}
 #
 # Number of nodes to use for each task.
 #

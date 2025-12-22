@@ -69,6 +69,7 @@ Workflow task names.
 <!ENTITY envir "{{ envir }}">
 <!ENTITY WGF   "{{ wgf }}">
 <!ENTITY VERSION "v1.0">
+<!ENTITY GRID_NAME "{{ grid_name }}">
 
 <!--
 Flags that determine whether to run the specific tasks.
@@ -542,6 +543,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
         
     <dependency>
@@ -584,6 +586,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>PREP_MODEL</name><value>0</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -623,6 +626,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -694,6 +698,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>GDAS_MEM_NAME</name><value>#memNameGDAS#</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -855,6 +860,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>BCGRPNUM</name><value>{{ boundary_proc_group_num }}</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -995,6 +1001,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>COMROOT</name><value>&COMROOT;</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1085,6 +1092,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>COMROOT</name><value>&COMROOT;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1173,6 +1181,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>RESTART_HRS</name><value><cyclestr>0</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1268,6 +1277,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>ENSCTRL_DATAROOT</name><value>&ENSCTRL_DATAROOT;</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1400,6 +1410,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>SATBIAS_DIR</name><value>&GESROOT;/satbias</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1456,6 +1467,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>SATBIAS_DIR</name><value>&GESROOT;/satbias</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1675,6 +1687,7 @@ MODULES_RUN_TASK_FP script.
     {%- endif %}
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1797,6 +1810,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>OB_TYPE</name><value>radardbz</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -1971,6 +1985,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>RESTART_HRS</name><value><cyclestr>1</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
   
     <dependency>
@@ -2198,6 +2213,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>COMROOT</name><value>&COMROOT;</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -2321,6 +2337,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>COMROOT</name><value>&COMROOT;</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -2457,6 +2474,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>SATBIAS_DIR</name><value><cyclestr>&GESROOT;/satbias</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -2514,6 +2532,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>SATBIAS_DIR</name><value><cyclestr>&GESROOT;/satbias</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -2660,6 +2679,7 @@ MODULES_RUN_TASK_FP script.
     {%- endif %}
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -2790,6 +2810,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>OB_TYPE</name><value>radardbz</value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
 
     <dependency>
@@ -3122,6 +3143,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>RESTART_HRS</name><value><cyclestr>{{ restart_hrs_prod }}</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
   
     <dependency>
@@ -3204,6 +3226,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>RESTART_HRS</name><value><cyclestr>{{ restart_hrs_prod_long }}</cyclestr></value></envar>
     <envar><name>envir</name><value>&envir;</value></envar>
     <envar><name>WGF</name><value>&WGF;</value></envar>
+    <envar><name>PREDEF_GRID_NAME</name><value>&GRID_NAME;</value></envar>
     <envar><name>KEEPDATA</name><value>YES</value></envar>
   
     <dependency>
