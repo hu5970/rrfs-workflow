@@ -47,22 +47,21 @@ This is the script for the task that runs smoke emissions preprocessing.
 #-----------------------------------------------------------------------
 ECHO=/bin/echo
 SED=/bin/sed
-DATE=/bin/date
 LN=/bin/ln
-START_DATE=$(${ECHO} "${CDATE}" | ${SED} 's/\([[:digit:]]\{2\}\)$/ \1/')
-YYYYMMDDHH=$(${DATE} +%Y%m%d%H -d "${START_DATE}")
-YYYYMMDD=${YYYYMMDDHH:0:8}
-HH=${YYYYMMDDHH:8:2}
+
+YYYYMMDDHH=${CDATE}
+YYYYMMDD=${PDY}
+HH=${cyc}
 ${ECHO} "${YYYYMMDD}"
 ${ECHO} "${HH}"
-current_day="$(${DATE} -d "${YYYYMMDD}" +%Y%m%d)"
-previous_day=`${DATE} '+%C%y%m%d' -d "${current_day} -1 days"`
-previous_2day=`${DATE} '+%C%y%m%d' -d "${current_day} -2 days"`
+current_day="${PDY}"
+previous_day=`${NDATE} -24 ${YYYYMMDDHH} | cut -c1-8`
+previous_2day=`${NDATE} -48 ${YYYYMMDDHH} | cut -c1-8`
 
 rave_base_prefix="${COMrrfs}/RAVE_INTP/rave_intp"
 
 for i in $(seq 0 24); do
-   timestr=$(${DATE} +%Y%m%d%H -d "${YYYYMMDD} ${HH} - $((i+1)) hours")
+   timestr=$(${NDATE} -$((i+1)) ${YYYYMMDDHH})
    daystr=${timestr:0:8}
    intp_fname=${PREDEF_GRID_NAME}_intp_${timestr}00_${timestr}59.nc
    rave_day_dir="${rave_base_prefix}.${daystr}"
