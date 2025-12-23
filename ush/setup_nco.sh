@@ -858,6 +858,56 @@ You can specify the missing location(s) in config.sh"
 
 esac
 #
+#
+#
+FIX_ROOT="/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/fix_rrfs_20250623"
+mkdir -p "${HOMErrfs}/fix"
+ln -fsn ${FIX_ROOT}/acsnow                        $HOMErrfs/fix/acsnow
+ln -fsn ${FIX_ROOT}/am                            $HOMErrfs/fix/am
+
+mkdir -p ${HOMErrfs}/fix/bufrsnd
+ln -fsn ${FIX_ROOT}/bufrsnd/regional_bufr.tbl        $HOMErrfs/fix/bufrsnd/.
+ln -fsn ${FIX_ROOT}/bufrsnd/regional_sndp.parm.mono  $HOMErrfs/fix/bufrsnd/regional_sndp.parm.mono
+ln -fsn ${FIX_ROOT}/bufrsnd/${PREDEF_GRID_NAME}      $HOMErrfs/fix/bufrsnd/.
+
+mkdir -p ${HOMErrfs}/fix/crtm
+ln -fsn ${FIX_ROOT}/crtm/CRTM_v2.4.0              $HOMErrfs/fix/crtm/CRTM_v2.4.0
+ln -fsn ${FIX_ROOT}/fix_orog                      $HOMErrfs/fix/fix_orog
+ln -fsn ${FIX_ROOT}/fix_sfc_climo                 $HOMErrfs/fix/fix_sfc_climo
+ln -fsn ${FIX_ROOT}/gempak                        $HOMErrfs/fix/gempak
+
+mkdir -p ${HOMErrfs}/fix/gsi
+cp -f ${FIX_ROOT}/gsi/*                          $HOMErrfs/fix/gsi/.
+ln -fsn ${FIX_ROOT}/gsi/${PREDEF_GRID_NAME}       $HOMErrfs/fix/gsi/.
+
+mkdir -p ${HOMErrfs}/fix/lam
+ln -fsn ${FIX_ROOT}/lam/${PREDEF_GRID_NAME}        $HOMErrfs/fix/lam/.
+
+ln -fsn ${FIX_ROOT}/prdgen                         $HOMErrfs/fix/prdgen
+
+mkdir -p ${HOMErrfs}/fix/smoke_dust
+ln -fsn ${FIX_ROOT}/smoke_dust/${PREDEF_GRID_NAME} $HOMErrfs/fix/smoke_dust/${PREDEF_GRID_NAME}
+
+mkdir -p ${HOMErrfs}/fix/upp
+cp -f ${FIX_ROOT}/upp/*                           $HOMErrfs/fix/upp/.
+ln -fsn ${FIX_ROOT}/upp/${PREDEF_GRID_NAME}        $HOMErrfs/fix/upp/.
+
+mkdir -p $HOMErrfs/fix/workflow/det
+mkdir -p $HOMErrfs/fix/workflow/enkf
+mkdir -p $HOMErrfs/fix/workflow/ensf
+if [[ ${PREDEF_GRID_NAME} == "RRFS_CONUS_3km" ]] ; then
+   ln -fsn ${FIX_ROOT}/workflow/det/workflow.conf_c3 $HOMErrfs/fix/workflow/det/workflow.conf
+   ln -fsn ${FIX_ROOT}/workflow/enkf/workflow.conf_c3 $HOMErrfs/fix/workflow/enkf/workflow.conf
+   ln -fsn ${FIX_ROOT}/workflow/ensf/workflow.conf_c3 $HOMErrfs/fix/workflow/ensf/workflow.conf
+else
+   ln -fsn ${FIX_ROOT}/workflow/det/workflow.conf $HOMErrfs/fix/workflow/det/workflow.conf
+   ln -fsn ${FIX_ROOT}/workflow/enkf/workflow.conf $HOMErrfs/fix/workflow/enkf/workflow.conf
+   ln -fsn ${FIX_ROOT}/workflow/ensf/workflow.conf $HOMErrfs/fix/workflow/ensf/workflow.conf
+fi
+
+ln -fsn ${FIX_ROOT}/workflow/firewx        $HOMErrfs/fix/workflow/firewx
+
+#
 #-----------------------------------------------------------------------
 #
 # Set the base directories in which codes obtained from external reposi-
