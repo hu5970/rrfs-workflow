@@ -9,8 +9,8 @@
 
 &atmos_model_nml
     avg_max_length = 3600.0
-    blocksize = 28
-    ccpp_suite = 'RRFS_sas'
+    blocksize = 32
+    ccpp_suite = 'RRFS_sas_nogwd'
     chksum_debug = .false.
     dycore_only = .false.
     ignore_rst_cksum = .true.
@@ -56,14 +56,13 @@
 
 &fms_nml
     clock_grain = 'ROUTINE'
-    domains_stack_size = 10000000
+    domains_stack_size = 3000000
     print_memory_usage = .false.
 /
 
 &fv_core_nml
     a_imp = 1.0
     adjust_dry_mass = .false.
-    agrid_vel_rst = .true.
     bc_update_interval = 1
     beta = 0.0
     consv_am = .false.
@@ -83,11 +82,11 @@
     dwind_2d = .false.
     dz_min = 2.0
     external_eta = .true.
-    external_ic = .false.
+    external_ic = .true.
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
-    fv_sg_adj = 300
+    fv_sg_adj = 7200
     gfs_phil = .false.
     hord_dp = 6
     hord_mt = 6
@@ -102,22 +101,22 @@
     kord_tm = -9
     kord_tr = 9
     kord_wz = 9
-    layout = 53, 128
-    make_nh = .false.
-    mountain = .true.
+    layout = 14, 14
+    make_nh = .true.
+    mountain = .false.
     n_split = 5
-    n_sponge = -1
+    n_sponge = 65
     n_zs_filter = 0
-    na_init = 0
+    na_init = 1
     ncep_ic = .false.
-    nggps_ic = .false.
+    nggps_ic = .true.
     no_dycore = .false.
     nord = 3
     nord_tr = 0
-    npx = 3951
-    npy = 2701
+    npx = 351
+    npy = 351
     npz = 65
-    nrows_blend = 20
+    nrows_blend = 10
     ntiles = 1
     nudge_qv = .false.
     nwat = 6
@@ -125,27 +124,23 @@
     phys_hydrostatic = .false.
     print_freq = 6
     psm_bc = 1
-    range_warn = .false.
+    range_warn = .true.
     read_increment = .false.
     regional = .true.
     regional_bcs_from_gsi = .false.
     res_latlon_dynamics = 'fv3_increment.nc'
     reset_eta = .false.
     rf_cutoff = 2000.0
-    sg_cutoff = 40000.0
+    sg_cutoff = -1
     stretch_fac = 0.999
-    target_lat = 55.0
-    target_lon = -112.5
+    target_lat = 49.3
+    target_lon = -123.0
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.02
-    warm_start = .true.
+    warm_start = .false.
     write_restart_with_bcs = .false.
     z_tracer = .true.
-/
-
-&fv_diagnostics_nml
-    do_hailcast = .true.
 /
 
 &fv_grid_nml
@@ -153,55 +148,39 @@
 /
 
 &gfs_physics_nml
-    addsmoke_flag = 1
-    aero_dir_fdb = .true.
-    aero_ind_fdb = .false.
     betadcu = 1.0
     bl_mynn_edmf = 1
     bl_mynn_edmf_mom = 1
     bl_mynn_tkeadvect = .true.
     cal_pre = .false.
     cdmbgwd = 3.5, 1.0
-    clm_debug_print = .false.
-    clm_lake_debug = .false.
     cnvcld = .false.
     cnvgwd = .false.
-    coarsepm_settling = 1
     cplflx = .false.
     debug = .false.
     diag_log = .true.
     do_deep = .true.
-    do_gsl_drag_ls_bl = .true.
-    do_gsl_drag_ss = .true.
-    do_gsl_drag_tofd = .true.
+    do_gsl_drag_ls_bl = .false.
+    do_gsl_drag_ss = .false.
+    do_gsl_drag_tofd = .false.
     do_mynnedmf = .true.
     do_mynnsfclay = .true.
-    do_plumerise = .true.
-    do_smoke_transport = .true.
     do_tofd = .false.
     do_ugwp = .false.
     do_ugwp_v0 = .false.
     do_ugwp_v0_nst_only = .false.
     do_ugwp_v0_orog_only = .false.
-    drydep_opt = 1
     dspheat = .true.
-    dt_inner = 36
-    dust_alpha = 10.0
-    dust_drylimit_factor = 0.5
-    dust_gamma = 1.3
-    dust_moist_correction = 2.0
-    dust_opt = 1
+    dt_inner = 20
     ebb_dcycle = 2
     effr_in = .true.
     enh_mix = .false.
-    fhcyc = 0.0
+    fhcyc = 0
     fhlwr = 900.0
     fhswr = 900.0
     fhzero = 1.0
-    frac_ice = .true.
-    gwd_opt = 3
+    gwd_opt = 0
     h2o_phys = .true.
-    hwp_method = 1
     hybedmf = .false.
     iaer = 1011
     ialb = 2
@@ -222,7 +201,6 @@
     iopt_dveg = 2
     iopt_frz = 1
     iopt_inf = 1
-    iopt_lake = 2
     iopt_rad = 1
     iopt_run = 1
     iopt_sfc = 1
@@ -243,7 +221,6 @@
     lgfdlmprad = .false.
     lheatstrg = .false.
     lightning_threat = .true.
-    lkm = 1
     lradar = .true.
     lrefres = .true.
     lsm = 3
@@ -251,39 +228,27 @@
     lsoil_lsm = 9
     ltaerosol = .true.
     lwhtr = .true.
-    min_lakeice = 0.15
-    min_seaice = 0.15
-    mix_chem = .true.
     mosaic_lu = 1
     mosaic_soil = 1
     nsfullradar_diag = 3600
     oz_phys = .false.
     oz_phys_2015 = .true.
     pdfcld = .false.
-    plume_wind_eff = 1
-    plumerisefire_frq = 30
     pre_rad = .false.
-    print_diff_pgr = .true.
+    print_diff_pgr = .false.
     progsigma = .true.
     prslrd0 = 0.0
     random_clds = .false.
     redrag = .true.
-    rrfs_sd = .true.
-    rrfs_smoke_debug = .false.
+    rrfs_sd = .false.
     satmedmf = .false.
-    sc_factor = 1.0
-    seas_opt = 0
     sfclay_compute_flux = .true.
     shal_cnv = .false.
-    sigmab_coldstart = .true.
-    smoke_conv_wet_coef = 0.5, 0.5, 0.5
     swhtr = .true.
     thsfc_loc = .false.
     trans_trac = .true.
     ttendlim = -999
     use_ufo = .true.
-    wetdep_ls_alpha = 0.5
-    wetdep_ls_opt = 1
 /
 
 &interpolator_nml
@@ -303,26 +268,26 @@
     fabsl = 99999
     faisl = 99999
     faiss = 99999
-    fnabsc = ''
+    fnabsc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.maximum_snow_albedo.tileX.nc'
     fnacna = ''
-    fnaisc = ''
-    fnalbc = ''
-    fnalbc2 = ''
-    fnglac = ''
-    fnmskh = ''
-    fnmxic = ''
-    fnslpc = ''
-    fnsmcc = ''
+    fnaisc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/CFSR.SEAICE.1982.2012.monthly.clim.grb'
+    fnalbc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.snowfree_albedo.tileX.nc'
+    fnalbc2 = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.facsf.tileX.nc'
+    fnglac = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/global_glacier.2x2.grb'
+    fnmskh = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/seaice_newland.grb'
+    fnmxic = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/global_maxice.2x2.grb'
+    fnslpc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.slope_type.tileX.nc'
+    fnsmcc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/global_soilmgldas.t1534.3072.1536.grb'
     fnsnoa = ''
-    fnsnoc = ''
-    fnsotc = ''
-    fntg3c = ''
+    fnsnoc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/global_snoclim.1.875.grb'
+    fnsotc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.soil_type.tileX.nc'
+    fntg3c = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.substrate_temperature.tileX.nc'
     fntsfa = ''
-    fntsfc = ''
-    fnvegc = ''
-    fnvetc = ''
-    fnvmnc = ''
-    fnvmxc = ''
+    fntsfc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/v0.9.1/rrfs_firewx/fix_am/RTGSST.1982.2012.monthly.clim.grb'
+    fnvegc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.vegetation_greenness.tileX.nc'
+    fnvetc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.vegetation_type.tileX.nc'
+    fnvmnc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.vegetation_greenness.tileX.nc'
+    fnvmxc = '/lfs/h2/emc/lam/noscrub/emc.lam/rrfs/para/packages/rrfs.v1.0.0/parm/config/firewx/fix_lam/C6667.vegetation_greenness.tileX.nc'
     fnzorc = 'igbp'
     fsicl = 99999
     fsics = 99999

@@ -907,6 +907,22 @@ fi
 
 ln -fsn ${FIX_ROOT}/workflow/firewx        $HOMErrfs/fix/workflow/firewx
 
+
+# 
+if [[ ${PREDEF_GRID_NAME} == "RRFS_CONUS_3km" ]] ; then
+  if [ ! -d $HOMErrfs/parm/config_n3 ] ;then
+    mv $HOMErrfs/parm/config $HOMErrfs/parm/config_n3
+    cp -r $HOMErrfs/ush/sample_configs/config_c3 $HOMErrfs/parm/config
+  fi
+fi
+if [[ ${PREDEF_GRID_NAME} == "RRFS_NA_3km" ]] ; then
+  if [ -d $HOMErrfs/parm/config_n3 ] ;then
+    mv $HOMErrfs/parm/config $HOMErrfs/parm/config_c3
+    mv $HOMErrfs/parm/config_n3 $HOMErrfs/parm/config
+  fi
+fi
+
+
 #
 #-----------------------------------------------------------------------
 #

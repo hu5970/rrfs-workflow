@@ -9,7 +9,7 @@
 
 &atmos_model_nml
     avg_max_length = 3600.0
-    blocksize = 32
+    blocksize = 28
     ccpp_suite = 'RRFS_sas'
     chksum_debug = .false.
     dycore_only = .false.
@@ -102,7 +102,7 @@
     kord_tm = -9
     kord_tr = 9
     kord_wz = 9
-    layout = 15, 32
+    layout = 43, 64
     make_nh = .true.
     mountain = .false.
     n_split = 5
@@ -114,8 +114,8 @@
     no_dycore = .false.
     nord = 3
     nord_tr = 0
-    npx = 1821
-    npy = 1093
+    npx = 3951
+    npy = 2701
     npz = 65
     nrows_blend = 20
     ntiles = 1
@@ -134,8 +134,8 @@
     rf_cutoff = 2000.0
     sg_cutoff = 40000.0
     stretch_fac = 0.999
-    target_lat = 38.5
-    target_lon = -97.5
+    target_lat = 55.0
+    target_lon = -112.5
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.02

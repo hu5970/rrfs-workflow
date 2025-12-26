@@ -1,6 +1,6 @@
 MACHINE="wcoss2"
 MACHINETYPE="person"
-version="v1.1.2"
+version="v1.1.3"
 ACCOUNT="RRFS_DEV"
 #RESERVATION="rrfsdet"
 EXPT_BASEDIR="/lfs/h2/emc/lam/noscrub/Ming.Hu/rrfs/${version}"

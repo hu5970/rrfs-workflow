@@ -1,6 +1,6 @@
 MACHINE="wcoss2"
 MACHINETYPE="person"
-version="v1.1.1"
+version="v1.1.3"
 ACCOUNT="RRFS_DEV"
 #RESERVATION="rrfsdet"
 EXPT_BASEDIR="/lfs/h2/emc/lam/noscrub/Ming.Hu/rrfs/${version}"
@@ -121,7 +121,7 @@ EXTRN_MDL_NAME_LBCS="GFS"
 envir="para"
 
 NET="rrfs"
-TAG="n3v111"
+TAG="n3v113"
 
 MODEL="rrfs"
 RUN="rrfs"
@@ -131,10 +131,10 @@ WGF="det"
 
 DCOM_ROOT="/lfs/h1/ops/prod/dcom"
 STMP="/lfs/h2/emc/stmp/Ming.Hu/rrfs/${version}"  # Path to directory STMP that mostly contains input files.
-PTMP="/lfs/h2/emc/stmp/Ming.Hu/rrfs/${version}"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs/h2/emc/ptmp/Ming.Hu/rrfs/${version}"  # Path to directory STMP that mostly contains input files.
 GESROOT="/lfs/h2/emc/ptmp/Ming.Hu/rrfs/${version}/nwges"  # Path to directory GESROOT that save boundary, cold initial, restart files
 if [[ ${regional_ensemble_option} == "5" ]]; then
-  RRFSE_GESROOT="/lfs/h2/emc/stmp/emc.lam/rrfs/${version}/nwges"  # Path to RRFSE directory GESROOT that mostly contains ensemble restart files for GSI hybrid.
+  RRFSE_GESROOT="/lfs/h2/emc/ptmp/emc.lam/rrfs/${version}"  # Path to RRFSE directory GESROOT that mostly contains ensemble restart files for GSI hybrid.
   NUM_ENS_MEMBERS=30     # FV3LAM ensemble size for GSI hybrid analysis
   CYCL_HRS_PRODSTART_ENS=( "08" "20" )
   DO_ENVAR_RADAR_REF="TRUE"

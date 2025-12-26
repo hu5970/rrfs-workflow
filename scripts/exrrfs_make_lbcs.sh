@@ -356,7 +356,7 @@ if [ ${extrn_mdl_name} != GEFS ] ; then
      t_file_ct=36
    else
      # case for det
-     t_file_ct=24
+     t_file_ct=97
    fi
    while [ $(ls ${umbrella_lbcops_data} |grep -v cptmp| wc -l) -lt ${t_file_ct} ]; do
      sleep 66
